@@ -1,0 +1,35 @@
+@import 'mixins';
+
+.dditem {
+  position: relative;
+  background-color: #f0ad4e;
+  &.dditem--head {
+    display: inline-block;
+    background-color: #d9534f;
+  }
+  & + & {
+    margin-top: 1px;
+  }
+}
+.dditem__body {
+  padding: 0.5em 1em;
+  white-space: nowrap;
+  & + div {
+    position: absolute;
+    top: 0; right: 0;
+  }
+  .dditem--head > & + div {
+    position: relative;
+    top: 1px; right: auto;
+  }
+}
+.dditem__children {
+  position: absolute;
+  top: 0; left: 1px;
+  &:not(.dditem__children--open) {
+    display: none;
+  }
+  .dditem--head > .dditem__body + div > & {
+    left: 0;
+  }
+}

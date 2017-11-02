@@ -27,23 +27,23 @@ export const data = [
       }
     ]
   }, {
-    lable: 'Biology',
+    label: 'Biology',
     value: 'Biology',
     children: [
       {
-        lable: 'Size',
+        label: 'Size',
         value: 'Size',
         children: [
           {
-            lable: 'Largest and smallest',
+            label: 'Largest and smallest',
             value: 'Largest and smallest'
           }
         ]
       }, {
-        lable: 'Behavior',
+        label: 'Behavior',
         value: 'Behavior',
       }, {
-        lable: 'Communication',
+        label: 'Communication',
         value: 'Communication',
       }
     ]
