@@ -8,12 +8,17 @@ class Dropdown extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      open: false
+      open: false,
+      selected: []
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickLabel = this.handleClickLabel.bind(this);
   }
   handleClick(){
     this.setState({open: !this.state.open});
+  }
+  handleClickLabel(value){
+    console.log(value);
   }
   render(){
     const {data, headText} = this.props;
@@ -25,6 +30,7 @@ class Dropdown extends PureComponent {
           data={{label: headText, value: headText, children: data}}
           open={open}
           onClick={this.handleClick}
+          onClickLabel={this.handleClickLabel}
         />
       </div>
     );
