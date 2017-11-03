@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import _ from 'underscore';
 
 class DDItem extends PureComponent {
   constructor(props){
@@ -38,11 +37,13 @@ class DDItem extends PureComponent {
     }
   }
   render(){
-    const {head, data} = this.props;
+    const {head, data, selected} = this.props;
     const {open} = this.state;
-    const items = (!data.children ? null : _.map(data.children, (d, i) => (
+    const isSelected = (Array.isArray(selected) ? selected.indexOf(data.value) >= 0 : selected == data.value);
+    const items = (!data.children ? null : data.children.map((d, i) => (
       <DDItem key={d.value}
         data={d}
+        selected={selected}
         onClickLabel={this.handleClickChildLabel}
       />
     )));
@@ -50,7 +51,12 @@ class DDItem extends PureComponent {
       <div ref={this.setRef} className={'dditem' + (head ? ' dditem--head' : '')}>
         <div className="dditem__body">
           <span className="dditem__label">{data.label}</span>
-          <div className="dditem__area-of-label" onClick={this.handleClickLabel}></div>
+          {isSelected &&
+            <div className="dditem__selected"></div>
+          }
+          {!head &&
+            <div className="dditem__area-of-label" onClick={this.handleClickLabel}></div>
+          }
           {data.children &&
             <div className="dditem__arrow" onClick={this.handleClickArrow}></div>
           }
@@ -67,6 +73,7 @@ class DDItem extends PureComponent {
 DDItem.propTypes = {
   head: PropTypes.bool,
   data: PropTypes.object.isRequired,
+  selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
   onClickLabel: PropTypes.func.isRequired
 };
 

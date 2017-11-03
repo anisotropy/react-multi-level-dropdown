@@ -6,7 +6,6 @@
     background-color: #d9534f;
   }
   & + & {
-    //border-top: solid 1px darken(#f0ad4e, 10%);
     margin-top: 1px;
   }
 }
@@ -24,6 +23,12 @@
 }
 .dditem__label {
   white-space: nowrap;
+}
+.dditem__selected {
+  position: absolute;
+  top: 0; left: 0;
+  width: 0.5em; height: 100%;
+  background-color: #337ab7;
 }
 .dditem__area-of-label {
   position: absolute;
