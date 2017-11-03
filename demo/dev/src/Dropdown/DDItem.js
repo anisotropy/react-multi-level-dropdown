@@ -37,11 +37,12 @@ class DDItem extends PureComponent {
     }
   }
   render(){
-    const {head, data, selected} = this.props;
+    const {head, type, data, selected} = this.props;
     const {open} = this.state;
-    const isSelected = (Array.isArray(selected) ? selected.indexOf(data.value) >= 0 : selected == data.value);
+    const isSelected = (type == 'multi-select' ? selected.indexOf(data.value) >= 0 : selected == data.value);
     const items = (!data.children ? null : data.children.map((d, i) => (
       <DDItem key={d.value}
+        type={type}
         data={d}
         selected={selected}
         onClickLabel={this.handleClickChildLabel}
@@ -72,8 +73,9 @@ class DDItem extends PureComponent {
 }
 DDItem.propTypes = {
   head: PropTypes.bool,
+  type: PropTypes.oneOf(['menu', 'select', 'multi-select']).isRequired,
   data: PropTypes.object.isRequired,
-  selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]),
+  selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
   onClickLabel: PropTypes.func.isRequired
 };
 
