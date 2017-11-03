@@ -51,14 +51,14 @@ class DDItem extends PureComponent {
       <div ref={this.setRef} className={'dditem' + (head ? ' dditem--head' : '')}>
         <div className="dditem__body">
           <span className="dditem__label">{data.label}</span>
-          {isSelected &&
-            <div className="dditem__selected"></div>
-          }
+          <div className={isSelected ? 'dditem__check' : null}></div>
           {!head &&
             <div className="dditem__area-of-label" onClick={this.handleClickLabel}></div>
           }
           {data.children &&
-            <div className="dditem__arrow" onClick={this.handleClickArrow}></div>
+            <div className={'dditem__arrow' + (open ? ' dditem__arrow--rotate' : '')}
+              onClick={this.handleClickArrow}>
+            </div>
           }
         </div>
         <div>
