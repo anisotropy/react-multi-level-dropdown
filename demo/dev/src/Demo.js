@@ -7,6 +7,8 @@ class Demo extends PureComponent {
     return (
       <div className="Demo">
         <Dropdown data={data} />
+
+        <Dropdown data={data} />
       </div>
     );
   }

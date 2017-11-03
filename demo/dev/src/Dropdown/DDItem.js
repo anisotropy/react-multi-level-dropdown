@@ -6,12 +6,12 @@ class DDItem extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      openChild: null
+      open: false
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.setRef = this.setRef.bind(this);
+    this.handleClickArrow = this.handleClickArrow.bind(this);
     this.handleClickLabel = this.handleClickLabel.bind(this);
     this.handleBodyClick = this.handleBodyClick.bind(this);
-    this.handleClickChild = this.handleClickChild.bind(this);
     this.handleClickChildLabel = this.handleClickChildLabel.bind(this);
   }
   componentDidMount(){
@@ -20,42 +20,40 @@ class DDItem extends PureComponent {
   componentWillUnmount(){
     document.removeEventListener('click', this.handleBodyClick);
   }
-  handleClick(e){
-    e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
-    this.props.onClick(this.props.open ? null : this.props.data.value);
+  setRef(node){
+    this.ref = node;
   }
-  handleClickLabel(e){
-    e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
+  handleClickArrow(e){
+    this.setState({open: !this.state.open});
+  }
+  handleClickLabel(){
     this.props.onClickLabel(this.props.data.value);
-  }
-  handleBodyClick(e){
-    this.props.onClick(null);
-  }
-  handleClickChild(value){
-    this.setState({openChild: value});
   }
   handleClickChildLabel(value){
     this.props.onClickLabel(value);
   }
+  handleBodyClick(e){
+    if(this.ref && !this.ref.contains(e.target)){
+      this.setState({open: false});
+    }
+  }
   render(){
-    const {head, open, data} = this.props;
-    const {openChild} = this.state;
+    const {head, data} = this.props;
+    const {open} = this.state;
     const items = (!data.children ? null : _.map(data.children, (d, i) => (
-      <DDItem
-        key={d.value}
-        open={d.value == openChild}
+      <DDItem key={d.value}
         data={d}
-        onClick={this.handleClickChild}
         onClickLabel={this.handleClickChildLabel}
       />
     )));
     return (
-      <div className={'dditem' + (head ? ' dditem--head' : '')}>
-        <div className="dditem__body" onClick={this.handleClickLabel}>
+      <div ref={this.setRef} className={'dditem' + (head ? ' dditem--head' : '')}>
+        <div className="dditem__body">
           <span className="dditem__label">{data.label}</span>
-          {data.children && <span className="dditem__arrow" onClick={this.handleClick}></span>}
+          <div className="dditem__area-of-label" onClick={this.handleClickLabel}></div>
+          {data.children &&
+            <div className="dditem__arrow" onClick={this.handleClickArrow}></div>
+          }
         </div>
         <div>
           <div className={'dditem__children' + (open ? ' dditem__children--open' : '')}>
@@ -68,9 +66,7 @@ class DDItem extends PureComponent {
 }
 DDItem.propTypes = {
   head: PropTypes.bool,
-  open: PropTypes.bool,
   data: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired,
   onClickLabel: PropTypes.func.isRequired
 };
 
