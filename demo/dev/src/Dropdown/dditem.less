@@ -1,0 +1,73 @@
+.dditem {
+  position: relative;
+  background-color: #f0ad4e;
+  &.dditem--head {
+    background-color: transparent;
+  }
+  & + & {
+    margin-top: 1px;
+  }
+}
+.dditem__body {
+  position: relative;
+  padding: 0.5em 3em 0.5em 1em;
+}
+.dditem__label {
+  white-space: nowrap;
+}
+.dditem__check {
+  position: absolute;
+  top: 0; left: 0;
+  width: 0.5em; height: 100%;
+  background-color: #337ab7;
+}
+.dditem__area-of-label {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.dditem__arrow {
+  position: absolute;
+  top: 0; right: 0;
+  width: 2em;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  &.dditem__arrow--rotate {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+.dditem__arrow:after {
+  content: '';
+  display: block;
+  position: relative;
+  transition: 0.3s;
+  top: calc(50% ~"-" 6px);
+  left: calc(50% ~"-" 3px);
+  width: 0; height: 0;
+  border-style: solid;
+  border-color: transparent #ffffff transparent transparent;
+  border-width: 6px 6px 6px 0;
+  .dditem__arrow--rotate& {
+    transform: rotateZ(180deg);
+  }
+}
+.dditem__children-wrapper {
+  position: absolute;
+  top: 0; right: 0;
+  .dditem--head > & {
+    position: relative;
+    top: 1px; right: auto;
+  }
+}
+.dditem__children {
+  position: absolute;
+  top: 0; left: 1px;
+  &:not(.dditem__children--open) {
+    display: none;
+  }
+  /*
+  .dditem--head > .dditem__body + div > & {
+    left: 0;
+  }
+  */
+}

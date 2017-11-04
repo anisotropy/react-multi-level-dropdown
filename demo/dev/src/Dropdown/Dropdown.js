@@ -15,7 +15,7 @@ class Dropdown extends PureComponent {
     if(typeof selected === 'undefined'){
       return 'menu';
     }
-    else if(typeof selected !== 'object'){
+    else if(typeof selected === 'string' || typeof selected === 'number' || !selected){
       return 'select';
     }
     else if(Array.isArray(selected)){

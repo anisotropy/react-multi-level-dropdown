@@ -1,0 +1,30 @@
+.ddheadinput {
+  position: relative;
+  padding: 0.5em 3em 0.5em 1em;
+  background-color: #d9534f
+}
+.ddheadinput__arrow {
+  position: absolute;
+  top: 0; right: 0;
+  width: 2em;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  &.ddheadinput__arrow--rotate {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+.ddheadinput__arrow:after {
+  content: '';
+  display: block;
+  position: relative;
+  transition: 0.3s;
+  top: calc(50% ~"-" 3px);
+  left: calc(50% ~"-" 6px);
+  width: 0; height: 0;
+  border-style: solid;
+  border-color: transparent transparent #ffffff transparent;
+  border-width: 0 6px 6px 6px;
+  .ddheadinput__arrow--open& {
+    transform: rotateZ(180deg);
+  }
+}

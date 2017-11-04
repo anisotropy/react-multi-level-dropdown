@@ -1,5 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import DDHeadInput from './DDHeadInput';
+import DDHeadButton from './DDHeadButton';
+import './dditem.less';
 
 class DDItem extends PureComponent {
   constructor(props){
@@ -40,6 +43,29 @@ class DDItem extends PureComponent {
     const {head, type, data, selected} = this.props;
     const {open} = this.state;
     const isSelected = (type == 'multi-select' ? selected.indexOf(data.value) >= 0 : selected == data.value);
+    const body = (head ?
+      (type == 'menu' ?
+        <DDHeadButton /> :
+        <DDHeadInput
+          type={type}
+          data={data}
+          selected={selected}
+          open={open}
+          onClickArrow={this.handleClickArrow}
+          onClickLabel={this.handleClickChildLabel}
+        />
+      ) :
+      <div className="dditem__body">
+        <span className="dditem__label">{data.label}</span>
+        <div className={isSelected ? 'dditem__check' : null}></div>
+        <div className="dditem__area-of-label" onClick={this.handleClickLabel}></div>
+        {data.children &&
+          <div className={'dditem__arrow' + (open ? ' dditem__arrow--rotate' : '')}
+            onClick={this.handleClickArrow}>
+          </div>
+        }
+      </div>
+    );
     const items = (!data.children ? null : data.children.map((d, i) => (
       <DDItem key={d.value}
         type={type}
@@ -50,19 +76,8 @@ class DDItem extends PureComponent {
     )));
     return (
       <div ref={this.setRef} className={'dditem' + (head ? ' dditem--head' : '')}>
-        <div className="dditem__body">
-          <span className="dditem__label">{data.label}</span>
-          <div className={isSelected ? 'dditem__check' : null}></div>
-          {!head &&
-            <div className="dditem__area-of-label" onClick={this.handleClickLabel}></div>
-          }
-          {data.children &&
-            <div className={'dditem__arrow' + (open ? ' dditem__arrow--rotate' : '')}
-              onClick={this.handleClickArrow}>
-            </div>
-          }
-        </div>
-        <div>
+        {body}
+        <div className="dditem__children-wrapper">
           <div className={'dditem__children' + (open ? ' dditem__children--open' : '')}>
             {items}
           </div>
