@@ -34,7 +34,7 @@ class DDHeadInput extends PureComponent {
     const labels = selected.map((value) => (
       <DDHeadLabel key={value}
         value={value}
-        label={this.findLabel(data.children, value)}
+        label={this.findLabel(data, value)}
         onClick={this.handleClickLabel}
       />
     ));
@@ -59,7 +59,7 @@ class DDHeadInput extends PureComponent {
 }
 DDHeadInput.propTypes = {
   type: PropTypes.oneOf(['select', 'multi-select']).isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
   open: PropTypes.bool,
   onClickArrow: PropTypes.func.isRequired,

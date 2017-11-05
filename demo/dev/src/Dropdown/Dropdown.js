@@ -43,7 +43,7 @@ class Dropdown extends PureComponent {
     return (
       <DDSelect
         type={this.type}
-        data={{label: headText, value: headText, children: data}}
+        data={data}
         selected={selected}
         onClickLabel={this.handleClickLabel}
       />

@@ -2,18 +2,21 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DDHeadInput from './DDHeadInput';
 import DDItem from './DDItem';
+import h_ from './helpful';
 
 class DDSelect extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      open: false
+      open: false,
+      result: []
     };
     this.setRef = this.setRef.bind(this);
     this.handleClickArrow = this.handleClickArrow.bind(this);
     this.handleBodyClick = this.handleBodyClick.bind(this);
     this.handleClickLabel = this.handleClickLabel.bind(this);
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
+    this.handleClickLabelInResult = this.handleClickLabelInResult.bind(this);
   }
   componentDidMount(){
     document.addEventListener('click', this.handleBodyClick);
@@ -30,8 +33,23 @@ class DDSelect extends PureComponent {
   handleClickLabel(value){
     this.props.onClickLabel(value);
   }
+  handleClickLabelInResult(value){
+    this.props.onClickLabel(value);
+    this.setState({result: []});
+  }
   handleChangeKeyword(keyword){
-    
+    let regexp = new RegExp(keyword, 'i');
+    const search = (data) => {
+      let result = [];
+      if(keyword){
+        data.forEach((d) => {
+          if(d.label.match(regexp)) result.push({label: d.label, value: d.value});
+          if(d.children) result = result.concat(search(d.children));
+        });
+      }
+      return result;
+    };
+    this.setState({open: false, result: search(this.props.data)});
   }
   handleBodyClick(e){
     if(this.ref && !this.ref.contains(e.target)){
@@ -40,7 +58,7 @@ class DDSelect extends PureComponent {
   }
   render(){
     const {type, data, selected} = this.props;
-    const {open} = this.state;
+    const {open, result} = this.state;
     const head = (
       <DDHeadInput
         type={type}
@@ -52,21 +70,34 @@ class DDSelect extends PureComponent {
         onChangeKeyword={this.handleChangeKeyword}
       />
     );
-    const items = (!data.children ? null : data.children.map((d, i) => (
+    const items = data.map((d) => (
       <DDItem key={d.value}
         type={type}
         data={d}
         selected={selected}
         onClickLabel={this.handleClickLabel}
       />
-    )));
+    ));
+    const searchResult = result.length > 0 && (
+      <div className="dropdown__result">
+        {result.map((d) => (
+          <DDItem key={d.value}
+            type="select"
+            data={d}
+            selected={selected}
+            onClickLabel={this.handleClickLabelInResult}
+          />
+        ))}
+      </div>
+    );
     return (
       <div ref={this.setRef} className="dropdown">
         {head}
         <div className="dropdown__children-wrapper">
-          <div className={'dropdown__children' + (open ? ' dropdown__children--open' : '')}>
+          <div className={h_.class('dropdown__children', [{open}])}>
             {items}
           </div>
+          {searchResult}
         </div>
       </div>
     );
@@ -75,7 +106,7 @@ class DDSelect extends PureComponent {
 DDSelect.propTypes = {
   head: PropTypes.bool,
   type: PropTypes.oneOf(['select', 'multi-select']).isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
   onClickLabel: PropTypes.func.isRequired
 };
