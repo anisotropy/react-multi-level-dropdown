@@ -21,6 +21,7 @@ class DDHeadInput extends PureComponent {
   }
   handleChangeKeyword(e){
     this.setState({keyword: e.target.value});
+    this.props.onChangeKeyword(e.target.value);
   }
   findLabel(data, value){
     return h_.extract(data, (d) => (
@@ -62,7 +63,8 @@ DDHeadInput.propTypes = {
   selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
   open: PropTypes.bool,
   onClickArrow: PropTypes.func.isRequired,
-  onClickLabel: PropTypes.func.isRequired
+  onClickLabel: PropTypes.func.isRequired,
+  onChangeKeyword: PropTypes.func.isRequired
 };
 
 export default DDHeadInput;

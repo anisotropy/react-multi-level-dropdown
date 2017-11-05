@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import DDItem from './DDItem';
+import DDSelect from './DDSelect';
 import update from 'immutability-helper';
 import './dropdown.less';
 
@@ -41,14 +41,12 @@ class Dropdown extends PureComponent {
   render(){
     const {data, headText, selected} = this.props;
     return (
-      <div className="dropdown">
-        <DDItem head
-          type={this.type}
-          data={{label: headText, value: headText, children: data}}
-          selected={selected}
-          onClickLabel={this.handleClickLabel}
-        />
-      </div>
+      <DDSelect
+        type={this.type}
+        data={{label: headText, value: headText, children: data}}
+        selected={selected}
+        onClickLabel={this.handleClickLabel}
+      />
     );
   }
 }
