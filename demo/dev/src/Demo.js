@@ -12,7 +12,6 @@ class Demo extends PureComponent {
   }
   handleChange(selected){
     this.setState({selected: selected});
-    console.log(selected);
   }
   render(){
     const {selected} = this.state;

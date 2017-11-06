@@ -20,7 +20,6 @@ class DDHeadInput extends PureComponent {
     this.props.onClickLabel(value);
   }
   handleChangeKeyword(e){
-    this.setState({keyword: e.target.value});
     this.props.onChangeKeyword(e.target.value);
   }
   findLabel(data, value){
@@ -29,8 +28,7 @@ class DDHeadInput extends PureComponent {
     ));
   }
   render(){
-    const {type, data, selected, open} = this.props;
-    const {keyword} = this.state;
+    const {type, data, selected, open, keyword} = this.props;
     const labels = selected.map((value) => (
       <DDHeadLabel key={value}
         value={value}
@@ -42,7 +40,9 @@ class DDHeadInput extends PureComponent {
       <AutosizeInput
         className="ddheadinput__input"
         value={keyword}
-        style={{minWidth: '5em'}}
+        style={{minWidth:
+          (type == 'multi-select' && selected.length > 0) || (type == 'selected' && selected) ? '1em' : '5em'
+        }}
         onChange={this.handleChangeKeyword}
       />
     );
@@ -62,6 +62,7 @@ DDHeadInput.propTypes = {
   data: PropTypes.array.isRequired,
   selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number, PropTypes.bool]),
   open: PropTypes.bool,
+  keyword: PropTypes.string,
   onClickArrow: PropTypes.func.isRequired,
   onClickLabel: PropTypes.func.isRequired,
   onChangeKeyword: PropTypes.func.isRequired
